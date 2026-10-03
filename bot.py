@@ -19,7 +19,7 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 WEB_APP_URL = (
     "https://raxmonjonov77-hash.github.io/"
-    "matematika-milliy-sertifikat/"
+    "matematika-milliy-sertifikat/index.html"
 )
 
 if not BOT_TOKEN:
