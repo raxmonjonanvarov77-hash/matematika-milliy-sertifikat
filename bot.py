@@ -37,22 +37,91 @@ dp = Dispatcher()
 # KEYBOARD
 # ==================================================
 
-keyboard = ReplyKeyboardMarkup(
-    keyboard=[
-        [
-            KeyboardButton(
-                text="🚀 MATHCERT TESTNI BOSHLASH",
-                web_app=WebAppInfo(url=WEB_APP_URL),
-            )
-        ],
-        [
-            KeyboardButton(text="📚 Qoidalar"),
-            KeyboardButton(text="⭐ Premium"),
-        ],
-    ],
-    resize_keyboard=True,
+from aiogram.types import (
+    Message,
+    KeyboardButton,
+    ReplyKeyboardMarkup,
+    ReplyKeyboardRemove,
+    WebAppInfo,
+    BotCommand,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
 )
 
+TOKEN = os.getenv("BOT_TOKEN")
+
+WEB_APP_URL = "https://raxmonjonov77-hash.github.io/matematika-milliy-sertifikat/"
+
+if not TOKEN:
+    raise RuntimeError("BOT_TOKEN topilmadi")
+
+bot = Bot(token=TOKEN)
+dp = Dispatcher()
+
+
+@dp.message(CommandStart())
+async def start(message: Message):
+    await message.answer(
+        "🧮 MATHCERT UZ\n\n"
+        "Testni boshlash uchun /test buyrug‘ini yuboring.",
+        reply_markup=ReplyKeyboardRemove()
+    )
+
+
+@dp.message(Command("test"))
+async def test_cmd(message: Message):
+
+    keyboard = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text="🚀 MATHCERT TESTNI BOSHLASH",
+                    web_app=WebAppInfo(url=WEB_APP_URL)
+                )
+            ]
+        ]
+    )
+
+    await message.answer(
+        "🚀 MATHCERT UZ Mini App",
+        reply_markup=keyboard
+    )
+
+
+@dp.message(Command("help"))
+async def help_cmd(message: Message):
+    await message.answer(
+        "🚀 /test — testni boshlash\n"
+        "📚 Qoidalar — test haqida ma'lumot"
+    )
+
+
+async def main():
+
+    await bot.set_my_commands([
+        BotCommand(
+            command="start",
+            description="MATHCERT UZ"
+        ),
+        BotCommand(
+            command="test",
+            description="Testni boshlash"
+        ),
+        BotCommand(
+            command="help",
+            description="Yordam"
+        ),
+    ])
+
+    print("MATHCERT UZ BOT ISHLAMOQDA")
+    print("WEB APP:", WEB_APP_URL)
+
+    await dp.start_polling(bot)
+
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
+    asyncio.run(main())
 
 # ==================================================
 # /START
